@@ -1,0 +1,820 @@
+<title>Tutoría de Lenguajes Digitales I</title>
+<style>
+  :root{
+    --paper: #F4F6F5;
+    --surface: #FFFFFF;
+    --surface-2: #ECF0EF;
+    --ink: #16202A;
+    --ink-soft: #57646F;
+    --ink-faint: #84929C;
+    --line: #DCE3E1;
+    --accent: #0E7C86;
+    --accent-ink: #063C42;
+    --accent-soft: #DCEEEF;
+    --warm: #C9762A;
+    --warm-soft: #F5E6D6;
+    --html-c: #E34F26;
+    --css-c: #2965F1;
+    --git-c: #6E5494;
+    --shadow: 0 1px 2px rgba(22,32,42,0.04), 0 8px 24px rgba(22,32,42,0.05);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #10161C;
+      --surface: #171F27;
+      --surface-2: #1D2731;
+      --ink: #E8EEF0;
+      --ink-soft: #93A2AC;
+      --ink-faint: #6B7A85;
+      --line: #26323C;
+      --accent: #4DD3DB;
+      --accent-ink: #DFF9FA;
+      --accent-soft: #163338;
+      --warm: #E8A15C;
+      --warm-soft: #33271A;
+      --html-c: #FF7A55;
+      --css-c: #7C9BFF;
+      --git-c: #B49CE0;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 28px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #10161C;
+    --surface: #171F27;
+    --surface-2: #1D2731;
+    --ink: #E8EEF0;
+    --ink-soft: #93A2AC;
+    --ink-faint: #6B7A85;
+    --line: #26323C;
+    --accent: #4DD3DB;
+    --accent-ink: #DFF9FA;
+    --accent-soft: #163338;
+    --warm: #E8A15C;
+    --warm-soft: #33271A;
+    --html-c: #FF7A55;
+    --css-c: #7C9BFF;
+    --git-c: #B49CE0;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 28px rgba(0,0,0,0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Public Sans", -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.6;
+  }
+  ::selection{ background: var(--accent-soft); color: var(--accent-ink); }
+
+  .mono{
+    font-family: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+
+  a { color: var(--accent); }
+  h1,h2,h3{ text-wrap: balance; margin: 0; }
+
+  .wrap{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+  .prose{ max-width: 66ch; }
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .topbar-inner{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 14px 28px;
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .breadcrumb{
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+  .breadcrumb .file{ color: var(--ink); }
+  .dots{ display:flex; gap:6px; flex-shrink:0; }
+  .dots span{
+    width:8px; height:8px; border-radius:50%; display:block;
+  }
+  .dots span:nth-child(1){ background: var(--html-c); }
+  .dots span:nth-child(2){ background: var(--css-c); }
+  .dots span:nth-child(3){ background: var(--git-c); }
+
+  /* ---------- hero ---------- */
+  .hero{ padding: 64px 0 48px; }
+  .eyebrow{
+    font-size: 0.8rem;
+    color: var(--accent);
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    margin-bottom: 18px;
+    letter-spacing: 0.02em;
+  }
+  .eyebrow::before{ content: "//"; color: var(--ink-faint); }
+
+  h1.title{
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 800;
+    font-size: clamp(2.1rem, 4.4vw, 3.2rem);
+    letter-spacing: -0.01em;
+    line-height: 1.08;
+  }
+  h1.title .sub{
+    display:block;
+    color: var(--accent);
+    font-size: 0.62em;
+    margin-top: 6px;
+  }
+  .tagline{
+    margin-top: 18px;
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    max-width: 52ch;
+  }
+  .meta-row{
+    margin-top: 28px;
+    display:flex;
+    flex-wrap: wrap;
+    gap: 8px 28px;
+    font-size: 0.9rem;
+  }
+  .meta-row dt{ color: var(--ink-faint); font-size:0.72rem; text-transform: uppercase; letter-spacing:0.06em; }
+  .meta-row dd{ margin:2px 0 0; font-weight:600; }
+  .meta-item{ min-width: 140px; }
+
+  .pipeline{
+    margin-top: 40px;
+    display:flex;
+    align-items:center;
+    flex-wrap: wrap;
+    gap: 4px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.85rem;
+  }
+  .pipeline .step{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-weight: 600;
+  }
+  .pipeline .arrow{ color: var(--ink-faint); padding: 0 4px; }
+
+  /* ---------- sections ---------- */
+  section.block{
+    padding: 56px 0;
+    border-top: 1px solid var(--line);
+  }
+  h2.h{
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.005em;
+  }
+  .lede{
+    margin: 10px 0 34px;
+    color: var(--ink-soft);
+    max-width: 60ch;
+  }
+
+  /* propósito */
+  .two-col{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  .panel{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px 24px;
+    box-shadow: var(--shadow);
+  }
+  .panel h3{
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  .panel p{ color: var(--ink-soft); margin:0; font-size: 0.95rem; }
+
+  ul.specs{
+    list-style: none;
+    margin: 0; padding: 0;
+    display:grid;
+    gap: 12px;
+  }
+  ul.specs li{
+    display:flex;
+    gap: 12px;
+    align-items: baseline;
+    font-size: 0.97rem;
+  }
+  ul.specs li::before{
+    content: "→";
+    font-family: "JetBrains Mono", monospace;
+    color: var(--accent);
+    flex-shrink:0;
+  }
+
+  /* qué/cómo/por qué */
+  .triad{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .triad .cell{
+    padding: 24px;
+    border-left: 1px solid var(--line);
+  }
+  .triad .cell:first-child{ border-left: none; }
+  .triad .tag{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    display:block;
+    margin-bottom: 8px;
+  }
+  .triad h3{ font-size: 1.02rem; margin-bottom: 8px; }
+  .triad p{ color: var(--ink-soft); font-size: 0.92rem; margin: 0 0 10px; }
+  .triad .ex{
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+  .rule-box{
+    margin-top: 22px;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 18px 22px;
+    display:flex;
+    gap: 16px;
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+  .rule-box .label{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-ink);
+    flex-shrink:0;
+  }
+  .rule-box p{ margin:0; font-weight: 600; color: var(--accent-ink); }
+
+  /* metodología: git-style timeline */
+  .timeline{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .timeline::before{
+    content:"";
+    position:absolute;
+    top: 13px; left: 0; right:0;
+    height: 2px;
+    background: var(--line);
+  }
+  .tl-step{ position:relative; padding-right: 18px; }
+  .tl-node{
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    display:flex; align-items:center; justify-content:center;
+    position: relative; z-index: 1;
+    margin-bottom: 16px;
+  }
+  .tl-step h3{ font-size: 0.98rem; margin-bottom: 6px; }
+  .tl-step p{ color: var(--ink-soft); font-size: 0.88rem; margin:0; }
+
+  .principle{
+    margin-top: 36px;
+    background: var(--warm-soft);
+    border: 1px solid var(--warm);
+    border-radius: 10px;
+    padding: 20px 24px;
+  }
+  .principle .label{
+    font-family:"JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--warm);
+  }
+  .principle p.main{
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin: 8px 0 6px;
+  }
+  .principle p.sub{ color: var(--ink-soft); margin:0; font-size: 0.92rem; }
+
+  /* sesiones — file cards */
+  .file-card{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    margin-bottom: 26px;
+    overflow: hidden;
+  }
+  .file-head{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface-2);
+  }
+  .file-dot{ width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .file-name{ font-family:"JetBrains Mono", monospace; font-size: 0.85rem; font-weight:600; }
+  .file-time{ margin-left:auto; font-family:"JetBrains Mono", monospace; font-size: 0.75rem; color: var(--ink-faint); }
+  .file-body{ padding: 24px 26px; }
+  .file-body h3.obj{ font-size: 0.72rem; text-transform: uppercase; letter-spacing:0.06em; color: var(--ink-faint); margin-bottom: 6px; }
+  .file-body p.objtext{ margin: 0 0 20px; font-size: 0.98rem; }
+
+  .sess-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .sess-grid h4{ font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px; color: var(--ink); }
+  .sess-grid p{ margin:0; color: var(--ink-soft); font-size: 0.9rem; }
+
+  .subgrid4{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 6px;
+  }
+  .subgrid4 .sub{
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .subgrid4 .sub h4{ font-size: 0.85rem; margin: 0 0 4px; }
+  .subgrid4 .sub p{ margin:0; font-size: 0.86rem; color: var(--ink-soft); }
+
+  .steps5{ list-style:none; margin: 0 0 18px; padding:0; display:grid; gap: 12px; counter-reset: step; }
+  .steps5 li{ display:flex; gap: 14px; align-items: baseline; font-size: 0.95rem; }
+  .steps5 li::before{
+    counter-increment: step;
+    content: counter(step);
+    font-family:"JetBrains Mono", monospace;
+    font-weight: 700;
+    font-size: 0.78rem;
+    color: var(--surface);
+    background: var(--git-c);
+    width: 20px; height:20px; border-radius: 5px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+
+  .close-check{
+    display:flex; flex-wrap:wrap; gap: 16px;
+    margin-top: 14px;
+    font-size: 0.9rem;
+  }
+  .close-check span.mark{ margin-right: 6px; }
+
+  /* recursos: 3 columns */
+  .cols3{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .cols3 h3{ font-size: 0.98rem; margin-bottom: 14px; }
+  .cols3 ul{ list-style:none; margin:0; padding:0; display:grid; gap: 10px; }
+  .cols3 li{ font-size: 0.9rem; color: var(--ink-soft); padding-left: 16px; position:relative; }
+  .cols3 li::before{ content:"·"; position:absolute; left:0; color: var(--accent); font-weight:700; }
+
+  /* evaluación */
+  .evalgrid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .evalcard{
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px 22px;
+    background: var(--surface);
+  }
+  .git-tag{
+    display:inline-block;
+    font-family:"JetBrains Mono", monospace;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+  .git-tag.diff{ background: var(--warm-soft); color: var(--warm); }
+  .git-tag.commit{ background: var(--accent-soft); color: var(--accent-ink); }
+  .git-tag.merge{ background: color-mix(in srgb, var(--git-c) 20%, transparent); color: var(--git-c); }
+  .evalcard h3{ font-size: 1rem; margin-bottom: 8px; }
+  .evalcard p{ margin:0; color: var(--ink-soft); font-size: 0.9rem; }
+
+  .indicator{
+    margin-top: 24px;
+    display:flex;
+    gap: 16px;
+    align-items:baseline;
+    background: var(--surface-2);
+    border-radius: 10px;
+    padding: 18px 22px;
+  }
+  .indicator .label{ font-family:"JetBrains Mono", monospace; font-size: 0.72rem; text-transform:uppercase; letter-spacing:0.06em; color: var(--ink-faint); flex-shrink:0; }
+  .indicator p{ margin:0; font-weight:600; }
+
+  /* cierre */
+  .close-wrap{
+    display:grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  ul.takeaway{ list-style:none; margin:0; padding:0; display:grid; gap: 14px; }
+  ul.takeaway li{ display:flex; gap:12px; font-size: 0.98rem; }
+  ul.takeaway li::before{ content:"✓"; color: var(--accent); font-weight:700; flex-shrink:0; }
+
+  .pipeline-v{
+    background: var(--surface-2);
+    border-radius: 10px;
+    padding: 26px;
+    text-align:center;
+    font-family:"JetBrains Mono", monospace;
+    font-weight:700;
+    display:grid;
+    gap: 10px;
+  }
+  .pipeline-v .arrow-d{ color: var(--ink-faint); font-weight:400; }
+
+  blockquote{
+    margin: 44px 0 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--ink);
+    max-width: 60ch;
+  }
+  blockquote cite{
+    display:block;
+    margin-top: 12px;
+    font-style: normal;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+  }
+
+  footer{
+    padding: 32px 0 60px;
+    color: var(--ink-faint);
+    font-size: 0.82rem;
+    font-family:"JetBrains Mono", monospace;
+  }
+
+  @media (max-width: 760px){
+    .two-col, .triad, .timeline, .sess-grid, .subgrid4, .cols3, .evalgrid, .close-wrap{
+      grid-template-columns: 1fr !important;
+    }
+    .triad .cell{ border-left:none; border-top: 1px solid var(--line); }
+    .triad .cell:first-child{ border-top:none; }
+    .timeline::before{ display:none; }
+    h1.title{ font-size: 2rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+  }
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700;800&family=Public+Sans:wght@400;500;600;700&display=swap">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="breadcrumb mono">lenguajes-digitales-i / <span class="file">plan-tutoria.md</span></div>
+    <div class="dots"><span></span><span></span><span></span></div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow mono">plan-de-tutoria</div>
+    <h1 class="title">Tutoría de<span class="sub">Lenguajes Digitales I</span></h1>
+    <p class="tagline">Del primer <code class="mono" style="background:var(--surface-2); padding:1px 6px; border-radius:4px;">&lt;div&gt;</code> a un sitio propio, sustentado con criterio.</p>
+
+    <dl class="meta-row">
+      <div class="meta-item"><dt>Tutor</dt><dd>Carlos</dd></div>
+      <div class="meta-item"><dt>Asignatura</dt><dd>Lenguajes Digitales I</dd></div>
+      <div class="meta-item"><dt>Documento</dt><dd>Propuesta de acompañamiento académico</dd></div>
+    </dl>
+
+    <div class="pipeline">
+      <span class="step">EXPLORAR</span><span class="arrow">→</span>
+      <span class="step">CONSTRUIR</span><span class="arrow">→</span>
+      <span class="step">DEPURAR</span><span class="arrow">→</span>
+      <span class="step">REFLEXIONAR</span>
+    </div>
+  </section>
+
+  <section class="block" id="proposito">
+    <div class="eyebrow mono">proposito</div>
+    <h2 class="h">Propósito de la tutoría</h2>
+    <p class="lede">Una propuesta centrada en que el estudiante escriba, entienda y pueda explicar su propio código.</p>
+
+    <div class="two-col">
+      <div class="panel">
+        <h3>Objetivo general</h3>
+        <p>Fortalecer las habilidades de desarrollo web frontend de los estudiantes, mediante práctica guiada, para que construyan sitios HTML/CSS estructurados, usen Git con criterio y sustenten sus decisiones técnicas y estéticas.</p>
+      </div>
+      <div class="panel">
+        <h3>¿A quién está dirigida?</h3>
+        <p>Estudiantes que necesiten reforzar HTML, CSS, Git o VS Code, o que quieran preparar mejor sus talleres, parciales y sustentaciones orales.</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:1rem; margin-bottom:16px;">Objetivos específicos</h3>
+    <ul class="specs">
+      <li>Reconocer y aplicar la estructura semántica de un documento HTML.</li>
+      <li>Escribir CSS a partir de la cascada y el box model, no por ensayo y error.</li>
+      <li>Usar Git (commits, ramas, GitHub) como parte natural del flujo de trabajo.</li>
+      <li>Justificar cada decisión de código y de estética frente a la sustentación oral.</li>
+    </ul>
+  </section>
+
+  <section class="block" id="comprender">
+    <div class="eyebrow mono">metodo</div>
+    <h2 class="h">¿Cómo lograr que el estudiante entienda?</h2>
+    <p class="lede">La tutoría pasa de copiar código ajeno a construir con sentido propio.</p>
+
+    <div class="triad">
+      <div class="cell">
+        <span class="tag mono">1. ¿QUÉ hago?</span>
+        <h3>Identifico el problema</h3>
+        <p>Reconozco qué necesito construir o resolver antes de escribir una sola línea.</p>
+        <p class="ex">Ej.: estructurar la navegación de un sitio.</p>
+      </div>
+      <div class="cell">
+        <span class="tag mono">2. ¿CÓMO lo hago?</span>
+        <h3>Lo escribo y lo pruebo</h3>
+        <p>Organizo el código paso a paso y verifico el resultado en el navegador.</p>
+        <p class="ex">Ej.: &lt;nav&gt;, &lt;ul&gt;, &lt;li&gt; y su jerarquía.</p>
+      </div>
+      <div class="cell">
+        <span class="tag mono">3. ¿POR QUÉ lo hago?</span>
+        <h3>Justifico la decisión</h3>
+        <p>Relaciono cada etiqueta o regla con la función real que cumple.</p>
+        <p class="ex">Ej.: por qué &lt;nav&gt; y no un &lt;div&gt; genérico.</p>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <span class="label mono">Regla de la tutoría</span>
+      <p>Todo lo que se escribe se puede leer en voz alta y explicar: qué hace y por qué está ahí.</p>
+    </div>
+  </section>
+
+  <section class="block" id="metodologia">
+    <div class="eyebrow mono">metodologia</div>
+    <h2 class="h">Metodología de trabajo</h2>
+    <p class="lede">Una secuencia corta y repetible para cada sesión, como los pasos de un mismo commit.</p>
+
+    <div class="timeline">
+      <div class="tl-step">
+        <div class="tl-node">01</div>
+        <h3>Diagnóstico inicial</h3>
+        <p>Preguntas rápidas y una línea de código para ver qué domina y dónde se traba.</p>
+      </div>
+      <div class="tl-step">
+        <div class="tl-node">02</div>
+        <h3>Explicación guiada</h3>
+        <p>Concepto clave, ejemplo mínimo y por qué funciona así, no solo cómo se escribe.</p>
+      </div>
+      <div class="tl-step">
+        <div class="tl-node">03</div>
+        <h3>Práctica activa</h3>
+        <p>El estudiante escribe, ejecuta y corrige su propio código; el tutor solo orienta.</p>
+      </div>
+      <div class="tl-step">
+        <div class="tl-node">04</div>
+        <h3>Verificación</h3>
+        <p>Cierre breve: resuelve algo nuevo solo y explica cómo lo pensó.</p>
+      </div>
+    </div>
+
+    <div class="principle">
+      <span class="label mono">Principio orientador</span>
+      <p class="main">Menos copiar y pegar → más escribir y entender.</p>
+      <p class="sub">El estudiante participa, decide, recibe retroalimentación y vuelve a intentarlo.</p>
+    </div>
+  </section>
+
+  <section class="block" id="sesiones">
+    <div class="eyebrow mono">sesiones</div>
+    <h2 class="h">Las tres sesiones</h2>
+    <p class="lede">Cada sesión corresponde a una capa real del trabajo: estructura, estilo y control de versiones.</p>
+
+    <div class="file-card">
+      <div class="file-head">
+        <span class="file-dot" style="background:var(--html-c)"></span>
+        <span class="file-name">sesion-1.html</span>
+        <span class="file-time">30–35 min</span>
+      </div>
+      <div class="file-body">
+        <h3 class="obj">Objetivo</h3>
+        <p class="objtext">Construir la estructura semántica de una página, sin depender de memorizar etiquetas sueltas.</p>
+        <div class="sess-grid">
+          <div>
+            <h4>Contenidos</h4>
+            <p>Jerarquía de encabezados, párrafos y listas · enlaces y rutas · semántica básica (header, nav, main, footer).</p>
+          </div>
+          <div>
+            <h4>Actividad central</h4>
+            <p>Reto breve por parejas: uno propone la estructura, el otro la revisa con una checklist de semántica y jerarquía. Pregunta guía: "¿qué representa esta sección y por qué esta etiqueta?".</p>
+          </div>
+        </div>
+        <div class="close-check">
+          <span><span class="mark">✓</span>algo que hizo bien</span>
+          <span><span class="mark">⚠</span>un error o vacío</span>
+          <span><span class="mark">→</span>una acción concreta para mejorar</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="file-card">
+      <div class="file-head">
+        <span class="file-dot" style="background:var(--css-c)"></span>
+        <span class="file-name">sesion-2.css</span>
+        <span class="file-time">35–40 min</span>
+      </div>
+      <div class="file-body">
+        <h3 class="obj">Objetivo</h3>
+        <p class="objtext">Reforzar la cascada, el box model y el layout, relacionando cada propiedad con su efecto visual real.</p>
+        <div class="subgrid4">
+          <div class="sub"><h4>Selectores y cascada</h4><p>Entender qué regla gana y por qué.</p></div>
+          <div class="sub"><h4>Box model</h4><p>Medir antes de ajustar: margin, border, padding, content.</p></div>
+          <div class="sub"><h4>Flexbox y grid</h4><p>Elegir el layout según el problema, no por ensayo y error.</p></div>
+          <div class="sub"><h4>Responsive</h4><p>Diseñar mobile-first y probar en distintos anchos.</p></div>
+        </div>
+        <p style="margin-top:16px; font-size:0.9rem; color:var(--ink-soft);"><strong style="color:var(--ink);">Reto:</strong> ante un diseño de referencia, el estudiante decide qué propiedades usar y por qué, no solo copia valores.</p>
+      </div>
+    </div>
+
+    <div class="file-card">
+      <div class="file-head">
+        <span class="file-dot" style="background:var(--git-c)"></span>
+        <span class="file-name">sesion-3.md</span>
+        <span class="file-time">35–40 min</span>
+      </div>
+      <div class="file-body">
+        <h3 class="obj">Objetivo</h3>
+        <p class="objtext">Integrar HTML, CSS y Git en el proyecto propio, preparando la sustentación oral.</p>
+        <ol class="steps5">
+          <li>Revisar el estado del proyecto y lo que falta.</li>
+          <li>Decidir qué cambios hacer y en qué orden.</li>
+          <li>Trabajar con Git: crear una rama, hacer commits claros.</li>
+          <li>Verificar el sitio en el navegador tras cada cambio.</li>
+          <li>Preparar la explicación para la sustentación oral.</li>
+        </ol>
+        <div class="two-col" style="margin-bottom:0;">
+          <div class="panel">
+            <h3>Clave pedagógica</h3>
+            <p>La meta no es "que funcione por accidente". La meta es que el estudiante explique qué escribió, por qué y qué decidió.</p>
+          </div>
+          <div class="panel">
+            <h3>Retroalimentación entre pares</h3>
+            <p>Checklist: estructura, estilos, mensajes de commit, accesibilidad básica y justificación de decisiones.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="recursos">
+    <div class="eyebrow mono">recursos</div>
+    <h2 class="h">Estrategias, herramientas y recursos</h2>
+    <p class="lede">Recursos sencillos para sostener la práctica y hacer visible el aprendizaje.</p>
+
+    <div class="cols3">
+      <div>
+        <h3>Estrategias pedagógicas</h3>
+        <ul>
+          <li>Aprendizaje activo</li>
+          <li>Preguntas guía</li>
+          <li>Pair programming</li>
+          <li>Depuración guiada (sin dar la respuesta)</li>
+          <li>Retroalimentación formativa</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Herramientas</h3>
+        <ul>
+          <li>VS Code + Live Server</li>
+          <li>Git y GitHub</li>
+          <li>Consola del navegador (DevTools)</li>
+          <li>MDN Web Docs</li>
+          <li>Canal de dudas (WhatsApp/Discord)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Recursos técnicos</h3>
+        <ul>
+          <li>Plantilla base HTML/CSS</li>
+          <li>Ejercicios en un repositorio de GitHub</li>
+          <li>Ejemplos con errores para depurar</li>
+          <li>Guía de atajos de VS Code</li>
+          <li>Checklist de accesibilidad (WCAG)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="evaluacion">
+    <div class="eyebrow mono">evaluacion</div>
+    <h2 class="h">Evaluación y seguimiento</h2>
+    <p class="lede">Evaluar para mejorar: la evidencia se recoge durante toda la tutoría, no solo al final.</p>
+
+    <div class="evalgrid">
+      <div class="evalcard">
+        <span class="git-tag diff mono">git diff</span>
+        <h3>Diagnóstica · antes</h3>
+        <p>Preguntas rápidas y un mini-reto sobre lo ya visto en clase, para ajustar la profundidad de la sesión.</p>
+      </div>
+      <div class="evalcard">
+        <span class="git-tag commit mono">commit</span>
+        <h3>Formativa · durante</h3>
+        <p>Observación directa + checklist + retroalimentación inmediata mientras el estudiante escribe código.</p>
+      </div>
+      <div class="evalcard">
+        <span class="git-tag merge mono">merge</span>
+        <h3>Cierre · después</h3>
+        <p>Mini-reto de cierre: resuelve algo nuevo y lo explica. Se deja una recomendación concreta para la próxima sesión.</p>
+      </div>
+    </div>
+
+    <div class="indicator">
+      <span class="label mono">Indicador de logro</span>
+      <p>El estudiante puede escribir, ejecutar y explicar su código de forma ordenada, sin depender de que se lo resuelvan.</p>
+    </div>
+  </section>
+
+  <section class="block" id="cierre">
+    <div class="eyebrow mono">cierre</div>
+    <h2 class="h">Cierre de la propuesta</h2>
+    <p class="lede">Una tutoría que conecta la sintaxis con el criterio.</p>
+
+    <div class="close-wrap">
+      <div>
+        <h3 style="font-size:1rem; margin-bottom:16px;">¿Qué quiero que se lleve el estudiante?</h3>
+        <ul class="takeaway">
+          <li>Una forma ordenada de estructurar cualquier página.</li>
+          <li>Confianza para escribir CSS sin ensayo y error.</li>
+          <li>El hábito de usar Git como parte normal de su trabajo.</li>
+          <li>La costumbre de justificar cada decisión de código.</li>
+          <li>Una estrategia concreta para seguir aprendiendo solo.</li>
+        </ul>
+      </div>
+      <div class="pipeline-v mono">
+        <span>EXPLORAR</span>
+        <span class="arrow-d">↓</span>
+        <span>CONSTRUIR</span>
+        <span class="arrow-d">↓</span>
+        <span>DEPURAR</span>
+        <span class="arrow-d">↓</span>
+        <span>REFLEXIONAR</span>
+      </div>
+    </div>
+
+    <blockquote>
+      “El código se aprende escribiendo, rompiendo y entendiendo por qué se rompió.”
+      <cite>— plan-tutoria.md</cite>
+    </blockquote>
+  </section>
+
+  <footer>Lenguajes Digitales I · Plan de tutoría · Programa de Creación Digital</footer>
+
+</main>
